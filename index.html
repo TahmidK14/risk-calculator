@@ -55,13 +55,22 @@
             const size = margin / riskAmount;
             const quantity = size / entryPrice;
             const leverage = Math.round(size / margin);
-            
+
+            // Calculate Take Profit
+            let tp;
+            if (entryPrice > stopPrice) { // Long position
+                tp = entryPrice + 2 * (entryPrice - stopPrice);
+            } else { // Short position
+                tp = entryPrice - 2 * (stopPrice - entryPrice);
+            }
+
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = `
                 <p>Margin: $${margin.toFixed(4)}</p>
                 <p>Size: $${size.toFixed(4)}</p>
                 <p>Leverage: ${leverage}x</p>
                 <p>Quantity: ${quantity.toFixed(4)}</p>
+                <p>Take Profit to 2x : $${tp.toFixed(4)}</p>
             `;
         });
     </script>
