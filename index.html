@@ -6,8 +6,8 @@
     <title>GAMBLING SIMULATOR</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white p-6 rounded-lg shadow-md">
+<body class="bg-black text-white min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-gray-900 p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-bold mb-4 text-center">Gamble! Gamble! Gamble!</h1>
         <form id="riskForm" class="space-y-4">
             <input type="number" id="wallet" placeholder="Wallet Balance" step="0.0001" required 
@@ -24,8 +24,15 @@
             </button>
         </form>
         <div id="results" class="mt-4 text-center"></div>
+
+        <!-- Countdown Timer Section -->
+        <div class="mt-6">
+            <div id="countdown" class="text-3xl font-mono text-center mb-4">Calculating...</div>
+        </div>
     </div>
+
     <script>
+        // Form calculation functionality
         document.getElementById('riskForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -73,6 +80,31 @@
                 <p>Take Profit to 2x : $${tp.toFixed(4)}</p>
             `;
         });
+
+        // Countdown Timer functionality
+        const countdownDisplay = document.getElementById("countdown");
+        const targetDate = new Date("December 31, 2026 23:59:59").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const timeLeft = targetDate - now;
+
+            if (timeLeft <= 0) {
+                countdownDisplay.textContent = "Time's up!";
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            countdownDisplay.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
     </script>
 </body>
 </html>
